@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Node.js File System Application</title>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+var socket = io();
+socket.on('start', function(data) {
+document.body.innerHTML = data;
+});
+socket.on('upload', function(data) {
+console.log(data);
+});
+socket.on('find', function(data) {
+console.log(data);
+});
+socket.on('show', function(data) {
+var img = document.createElement('img');
+img.src = 'data:image/jpeg;base64,' + data.toString('base64');
+document.body.appendChild(img);
+});
+socket.on('login', function(data) {
+console.log(data);
+});
+socket.on('logout', function(data) {
+console.log(data);
+});
+// Emit socket events
+document.addEventListener('DOMContentLoaded', function() {
+socket.emit('start');
+document.getElementById('upload-btn').addEventListener('click', function() {
+var fileInput = document.getElementById('file-input');
+var formData = new FormData();
+formData.append('uploadedFile', fileInput.files[0]);
+socket.emit('upload', formData);
+});
+document.getElementById('find-btn').addEventListener('click', function() {
+socket.emit('find');
+});
+document.getElementById('show-btn').addEventListener('click', function() {
+socket.emit('show');
+});
+document.getElementById('login-btn').addEventListener('click', function() {
+var usernameInput = document.getElementById('username-input');
+var passwordInput = document.getElementById('password-input');
+socket.emit('login', {
+username: usernameInput.value,
+password: passwordInput.value
+});
+});
+document.getElementById('logout-btn').addEventListener('click', function() {
+socket.emit('logout');
+});
+});
+</script>
+</head>
+<body>
+<h1>Welcome to the Node.js File System Application</h1>
+<input type="file" id="file-input" />
+<button id="upload-btn">Upload File</button>
+<button id="find-btn">Find Files</button>
+<button id="show-btn">Show Image</button>
+<input type="text" id="username-input" placeholder="Username" />
+<input type="password" id="password-input" placeholder="Password" />
+<button id="login-btn">Login</button>
+<button id="logout-btn">Logout</button>
+</body>
+</html>
