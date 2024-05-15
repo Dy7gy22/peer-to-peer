@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket simple example</title>
+</head>
+<body>
+    <textarea rows="5" cols="50" id="messageInput" placeholder="Enter text to send"></textarea>
+    <textarea rows="5" cols="50" id="messageOutput" disabled placeholder="Received messages"></textarea>
+    <button id="startButton">Connect</button>
+    <button id="sendButton" disabled>Send</button>
+    <button id="closeButton" disabled>Disconnect</button>
+
+    <script>
+        var websocket;
+
+        var startButton = document.getElementById("startButton");
+        var sendButton = document.getElementById("sendButton");
+        var closeButton = document.getElementById("closeButton");
+
+        startButton.addEventListener("click", function() {
+            startWebSocket();
+        });
+
+        sendButton.addEventListener("click", function() {
+            sendMessage();
+        });
+
+        closeButton.addEventListener("click", function() {
+            closeWebSocket();
+        });
+
+        function startWebSocket() {
+            websocket = new WebSocket("wss://echo.websocket.org");
+
+            websocket.onopen = function(event) {
+                startButton.disabled = true;
+                sendButton.disabled = false;
+                closeButton.disabled = false;
+                console.log("WebSocket opened");
+            };
+
+            websocket.onmessage = function(event) {
+                var messageOutput = document.getElementById("messageOutput");
+                messageOutput.value += event.data + "\n";
+                console.log("Message received: " + event.data);
+            };
+
+            websocket.onclose = function(event) {
+                startButton.disabled = false;
+                sendButton.disabled = true;
+                closeButton.disabled = true;
+                console.log("WebSocket closed");
+            };
+
+            websocket.onerror = function(error) {
+                console.error("WebSocket error: " + error);
+            };
+        }
+
+        function sendMessage() {
+            var messageInput = document.getElementById("messageInput").value;
+            websocket.send(messageInput);
+            console.log("Message sent: " + messageInput);
+        }
+
+        function closeWebSocket() {
+            websocket.close();
+            console.log("WebSocket closed");
+        }
+    </script>
+</body>
+</html>
