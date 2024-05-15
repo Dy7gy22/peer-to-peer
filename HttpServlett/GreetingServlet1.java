@@ -59,8 +59,13 @@ public class GreetingServlet1 extends HttpServlet {
             }
         }
         
-        // Redirection vers la page de salutation avec le nom
-        response.sendRedirect("greeting.jsp?nom=" + votreNom);
+        
+     // Après la génération du montant gagné
+        request.setAttribute("gagne", gagne);
+
+        // Redirection vers la page de salutation avec le nom et le montant gagné
+        request.getRequestDispatcher("greeting.jsp?nom=" + votreNom + "&gagne=" + gagne).forward(request, response);
+
     }
     
     // Méthode doPut pour gérer les requêtes PUT
