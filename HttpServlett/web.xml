@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" version="5.0">
+  <display-name>websecurity1</display-name>
+  <welcome-file-list>
+    <welcome-file>greetings.html</welcome-file>
+    <welcome-file>greetings.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>GreetingServlet</display-name>
+    <servlet-name>GreetingServlet</servlet-name>
+    <servlet-class>exple1.GreetingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GreetingServlet</servlet-name>
+    <url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <display-name>BlacklistFilter</display-name>
+    <filter-name>BlacklistFilter</filter-name>
+    <filter-class>exple1.BlacklistFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>BlacklistFilter</filter-name>
+    <url-pattern>/BlacklistFilter</url-pattern>
+  </filter-mapping>
+  <error-page>
+        <error-code>404</error-code>
+        <location>/error404.html</location> <!-- Page HTML personnalisée pour l'erreur 404 -->
+    </error-page>
+  <security-role>
+        <role-name>tomcat</role-name>
+</security-role>
+
+<security-constraint>
+    <web-resource-collection>
+        <web-resource-name>Greeting Servlet</web-resource-name>
+        <url-pattern>/Hello</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+        <role-name>tomcat</role-name>
+    </auth-constraint>
+</security-constraint>
+
+<login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>myrealm</realm-name>
+</login-config>
+</web-app>
